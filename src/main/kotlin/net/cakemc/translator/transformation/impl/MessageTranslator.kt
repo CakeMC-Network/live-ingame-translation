@@ -1,6 +1,5 @@
 package net.cakemc.translator.transformation.impl
 
-import net.cakemc.mc.lib.creature.Player
 import net.cakemc.mc.lib.network.AbstractPacket
 import net.cakemc.protocol.protocol.packets.client.ClientSystemChatPacket
 import net.cakemc.translator.transformation.ComponentHelper

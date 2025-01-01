@@ -1,15 +1,14 @@
 package net.cakemc.translator.transformation
 
-import net.cakemc.mc.lib.creature.Player
 import net.cakemc.mc.lib.game.inventory.item.ItemStack
 import net.cakemc.mc.lib.game.inventory.item.component.DataComponentTypes
 import net.cakemc.mc.lib.game.text.test.api.chat.BaseComponent
-import net.cakemc.translator.TranslationRegistry
+import net.cakemc.translator.TranslationReplacer
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ItemStackHelper(
-    var registry: TranslationRegistry,
+    var registry: TranslationReplacer,
     var componentHelper: ComponentHelper
 ) {
 

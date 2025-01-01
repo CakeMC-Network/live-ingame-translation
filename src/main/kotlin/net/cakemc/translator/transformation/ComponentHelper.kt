@@ -1,15 +1,14 @@
 package net.cakemc.translator.transformation
 
-import net.cakemc.mc.lib.creature.Player
 import net.cakemc.mc.lib.game.ServerLink
 import net.cakemc.mc.lib.game.entity.player.ListEntry
 import net.cakemc.mc.lib.game.text.test.api.ChatColor
 import net.cakemc.mc.lib.game.text.test.api.chat.BaseComponent
 import net.cakemc.mc.lib.game.text.test.api.chat.TextComponent
-import net.cakemc.translator.TranslationRegistry
+import net.cakemc.translator.TranslationReplacer
 import java.util.*
 
-class ComponentHelper(var translatorRegistry: TranslationRegistry) {
+class ComponentHelper(var translatorRegistry: TranslationReplacer) {
 
     fun translateComponent(player: UUID, component: BaseComponent): BaseComponent {
         val titlePane = ChatColor.stripColor(component.toPlainText())
