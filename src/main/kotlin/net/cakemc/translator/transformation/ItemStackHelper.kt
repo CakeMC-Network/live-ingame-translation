@@ -5,6 +5,8 @@ import net.cakemc.mc.lib.game.inventory.item.ItemStack
 import net.cakemc.mc.lib.game.inventory.item.component.DataComponentTypes
 import net.cakemc.mc.lib.game.text.test.api.chat.BaseComponent
 import net.cakemc.translator.TranslationRegistry
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ItemStackHelper(
     var registry: TranslationRegistry,
@@ -17,7 +19,7 @@ class ItemStackHelper(
         DataComponentTypes.LORE
     )
 
-    fun translateItemStack(player: Player, itemStack: ItemStack): ItemStack {
+    fun translateItemStack(player: UUID, itemStack: ItemStack): ItemStack {
         if (!itemStack.hasComponents()) return itemStack
 
         if (itemStack.dataComponents.has(DataComponentTypes.ITEM_NAME)) {

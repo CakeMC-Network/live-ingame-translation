@@ -8,6 +8,7 @@ import net.cakemc.protocol.protocol.packets.client.title.ClientSetTitleTextPacke
 import net.cakemc.translator.transformation.ComponentHelper
 import net.cakemc.translator.transformation.ItemStackHelper
 import net.cakemc.translator.transformation.PacketLanguageTranslator
+import java.util.*
 
 class TitleTranslator(
      itemStackHelper: ItemStackHelper,
@@ -17,7 +18,7 @@ class TitleTranslator(
     componentHelper
 ) {
 
-    override fun translate(player: Player, packet: AbstractPacket): AbstractPacket {
+    override fun translate(player: UUID, packet: AbstractPacket): AbstractPacket {
         if (packet is ClientSetTitleTextPacket) {
             packet.baseComponent = componentHelper.translateComponent(
                 player, packet.baseComponent

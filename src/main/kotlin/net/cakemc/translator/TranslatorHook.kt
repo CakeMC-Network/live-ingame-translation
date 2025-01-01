@@ -12,22 +12,22 @@ class TranslatorHook {
     // X ClientSetSubtitleTextPacket
     // X ClientSetTitleTextPacket
     //
-    // ClientServerLinksPacket -> ServerLink Utils
+    // X ClientServerLinksPacket -> ServerLink Utils
     //
-    // ClientTabListPacket
+    // X ClientTabListPacket
     //
-    // ClientPlayerInfoUpdatePacket -> ListEntry Utils
+    // X ClientPlayerInfoUpdatePacket -> ListEntry Utils
     //
-    // ClientSetPlayerInventoryPacket (items)
-    // ClientSetCursorItemPacket (item)
-    // ClientOpenScreenPacket (title)
-    // ClientContainerSetSlotPacket (item)
-    // ClientContainerSetContentPacket (items, carried)
+    // X ClientSetPlayerInventoryPacket (items)
+    // X ClientSetCursorItemPacket (item)
+    // X ClientOpenScreenPacket (title)
+    // X ClientContainerSetSlotPacket (item)
+    // X ClientContainerSetContentPacket (items, carried)
     //
-    // ClientSetEquipmentPacket -> EquipmentSlot Utils
+    // X ClientSetEquipmentPacket -> EquipmentSlot Utils
     //
     // ------------------------------------
-    // ClientSetEntityDataPacket
+    // X ClientSetEntityDataPacket
     //        - meta-data
     // 		- all components
 
