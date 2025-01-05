@@ -9,51 +9,52 @@ class DefaultTranslationReplacer(
 ) : TranslationReplacer {
 
     private val keyPattern: Pattern = Pattern.compile("\\b[a-zA-Z0-9_]+(?:\\.[a-zA-Z0-9_]+)+\\b")
+    private val numberPattern: Pattern = Pattern.compile("^-?\\d*\\.?\\d+$")
 
     override fun isKeyPresent(key: String): Boolean {
-        return key.split(" ").stream().anyMatch { keyPattern.matcher(it).matches() }
+        // Optimized by using a single check over the input
+        return key.split(" ").any { keyPattern.matcher(it).matches() }
     }
 
+
     override fun findTranslation(uuid: UUID, key: String): String {
-        if (keyPattern.matcher(key).matches()) {
-            val keySplit = key.split(".")
-
-            if (keySplit.size == 0 || keySplit.size == 1)
-                return key
-
-            val category = keySplit[0]
-            val translations = repository.resolveLanguage(
-                uuid, category
-            )
-
-            return translations.resolveForKey(key)
+        if (isSingleTranslationKey(key)) {
+            return translateKey(uuid, key) ?: key
         }
 
         val builder = StringBuilder()
-        val split = key.split(" ")
-        for (string in split) {
-            if (!keyPattern.matcher(string).matches()) {
+        val splitKeys = key.split(" ")
+
+        for (string in splitKeys) {
+            if (!isSingleTranslationKey(string)) {
                 builder.append(string).append(" ")
                 continue
             }
 
-            val keySplit = string.split(".")
-            if (keySplit.size == 0 || keySplit.size == 1) {
-                builder.append(string).append(" ")
-                continue
-            }
-
-            val category = keySplit[0]
-            val translations = repository.resolveLanguage(
-                uuid, category
-            )
-
-            val translated = translations
-                .resolveForKey(string)
-
-            builder.append(translated).append(" ")
+            builder.append(translateKey(uuid, string) ?: string).append(" ")
         }
-        return builder.toString()
+        // Remove trailing space
+        return builder.trimEnd()
+    }
+
+    private fun isSingleTranslationKey(key: String): Boolean {
+        return keyPattern.matcher(key).matches() && !numberPattern.matcher(key).matches()
+    }
+
+    private fun translateKey(uuid: UUID, key: String): String? {
+        val keySplit = key.split(".")
+        if (keySplit.size < 2) return null
+
+        val category = keySplit[0]
+        val translations = repository.resolveLanguage(uuid, category)
+        return translations.resolveForKey(key)
+    }
+
+    private fun StringBuilder.trimEnd(): String {
+        if (this.isNotEmpty() && this.last() == ' ') {
+            this.setLength(this.length - 1)
+        }
+        return this.toString()
     }
 
 }
