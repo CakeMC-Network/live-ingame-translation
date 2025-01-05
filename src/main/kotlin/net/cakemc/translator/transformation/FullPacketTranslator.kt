@@ -23,9 +23,10 @@ class FullPacketTranslator(
         ServerLinksTranslator(itemStackHelper, componentHelper),
         TablistTranslator(itemStackHelper, componentHelper),
         TitleTranslator(itemStackHelper, componentHelper),
+        DisconnectTranslator(itemStackHelper, componentHelper),
     )
 
-    public fun register() {
+    fun register() {
         abstractServer.eventManager.register(ServerSendPacketEvent::class.java, EventHandlers.IHandler {
             if (it.networkPlayer.currentState != NetworkPlayer.State.GAME)
                 return@IHandler

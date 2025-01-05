@@ -21,6 +21,8 @@
 
  X ClientSetEquipmentPacket -> EquipmentSlot Utils
 
+ X Disconnect
+
  ------------------------------------
  X ClientSetEntityDataPacket
         - meta-data
