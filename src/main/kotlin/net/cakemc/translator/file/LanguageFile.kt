@@ -25,6 +25,7 @@ class LanguageFile (
     fun resolveForKey(value: String): String {
         if (container.containsKey(value.lowercase())) {
             return container.getString(value.lowercase())!!
+                .replace("&", "§")
         }
 
         val defaultText = "§c translation for $value not found in $name"
