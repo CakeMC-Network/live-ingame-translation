@@ -30,7 +30,7 @@ class LanguageFile (
         val defaultText = "§c translation for $value not found in $name"
         container.append(value, defaultText)
         this.saveLanguageFile()
-        return defaultText
+        return defaultText.replace("&", "§")
     }
 
     fun saveLanguageFile() {
