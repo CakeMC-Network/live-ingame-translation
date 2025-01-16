@@ -27,7 +27,9 @@ class EntityMetaDataTranslator(
                         player, type
                     ) as Nothing?
                 }
-                if (entry.value.type == MetaDataType.OPT_CHAT_TYPE) {
+                if (entry.value.type == MetaDataType.OPT_CHAT_TYPE &&
+                    !entry.value.value.javaClass.equals(Void::javaClass)) {
+
                     val type: BaseComponent = entry.value.value as BaseComponent
                     entry.value.value = componentHelper.translateComponent(
                         player, type
