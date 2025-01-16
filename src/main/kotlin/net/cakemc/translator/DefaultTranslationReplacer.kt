@@ -10,10 +10,13 @@ class DefaultTranslationReplacer(
 
     private val keyPattern: Pattern = Pattern.compile("\\b[a-zA-Z0-9_]+(?:\\.[a-zA-Z0-9_]+)+\\b")
     private val numberPattern: Pattern = Pattern.compile("^-?\\d*\\.?\\d+$")
+    private val singleNumberPattern: Pattern = Pattern.compile("[0-9].*")
 
     override fun isKeyPresent(key: String): Boolean {
         // Optimized by using a single check over the input
-        return key.split(" ").any { keyPattern.matcher(it).matches() }
+        return key.split(" ").any { keyPattern.matcher(it).matches() &&
+                it.length > 2 &&
+                !singleNumberPattern.matcher(it).matches() }
     }
 
 
