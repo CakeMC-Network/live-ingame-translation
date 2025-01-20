@@ -22,13 +22,14 @@ class EntityMetaDataTranslator(
         if (packet is ClientSetEntityDataPacket) {
             for (entry in packet.changes.metadata.entries) {
                 if (entry.value.type == MetaDataType.STRING_TYPE) {
+
                     val type: String = entry.value.value as String;
                     entry.value.value = componentHelper.translateText(
                         player, type
                     ) as Nothing?
+
                 }
-                if (entry.value.type == MetaDataType.OPT_CHAT_TYPE &&
-                    !entry.value.value.javaClass.equals(Void::javaClass)) {
+                if (entry.value.type == MetaDataType.OPT_CHAT_TYPE && entry.value.value != null) {
 
                     val type: BaseComponent = entry.value.value as BaseComponent
                     entry.value.value = componentHelper.translateComponent(
