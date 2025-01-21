@@ -28,7 +28,7 @@ class LanguageFile (
                 .replace("&", "§")
         }
 
-        val defaultText = "§c translation for ${value.replace(".", "-")} not found in $name"
+        val defaultText = "&c translation for ${value.replace(".", "-")} not found in $name"
         container.append(value, defaultText)
         this.saveLanguageFile()
         return defaultText.replace("&", "§")
