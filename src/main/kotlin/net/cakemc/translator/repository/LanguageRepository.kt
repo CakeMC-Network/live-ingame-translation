@@ -6,7 +6,8 @@ import java.nio.file.Files
 import java.nio.file.LinkOption
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.UUID
+import java.util.*
+import kotlin.collections.HashMap
 
 class LanguageRepository(
     val path: Path,
@@ -20,11 +21,15 @@ class LanguageRepository(
             Files.createDirectory(path)
         }
 
-        // Automatically load all language files in the directory
-        Files.walk(path).filter { Files.isRegularFile(it) &&
-                it.toString().endsWith(".json") }.forEach { file ->
+        Files.walk(path).filter { Files.isRegularFile(it) && it.toString().endsWith(".json") }.forEach { file ->
+
             val relativePath = path.relativize(file)
-            val parts = relativePath.toString().split("/").toTypedArray()
+            val parts = relativePath.toString()
+                .replace("\\", "#")
+                .replace("/", "#")
+                .split("#")
+                .toTypedArray()
+
             if (parts.size == 2) {
                 val language = parts[0]
                 val category = parts[1].removeSuffix(".json")
@@ -32,6 +37,7 @@ class LanguageRepository(
                 repositories["$language/$category"] = languageFile
             }
         }
+
     }
 
     fun resolveLanguageFile(language: String, category: String): LanguageFile {
