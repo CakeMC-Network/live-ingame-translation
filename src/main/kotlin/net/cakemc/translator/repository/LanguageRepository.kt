@@ -13,12 +13,7 @@ class LanguageRepository(
     val playerHook: PlayerLanguageHook
 ) {
 
-    // repo structure:
-    // language/
-    // language/english/category_name.json
-    // language/spanish/category_name.json
-
-    private var repositories = HashMap<String, LanguageFile>(40)
+    private var repositories = HashMap<String, LanguageFile>()
 
     init {
         if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
@@ -49,6 +44,10 @@ class LanguageRepository(
             selectedLanguage = "english"
         }
         return this.resolveLanguageFile(selectedLanguage, category)
+    }
+
+    fun resolveLanguageFile(): List<LanguageFile> {
+        return repositories.values.toList()
     }
 
 }
