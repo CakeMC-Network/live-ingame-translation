@@ -280,7 +280,8 @@ class JsonContainer : Serializable {
     @Throws(CloneNotSupportedException::class)
     fun clone(): JsonContainer {
         return JsonContainer(this.cache)
-    } //</editor-fold>
+    }
+    //</editor-fold>
 
     companion object {
         private val GSON: Gson = (GsonBuilder()).serializeNulls().setPrettyPrinting().disableHtmlEscaping().create()

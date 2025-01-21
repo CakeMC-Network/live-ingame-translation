@@ -8,7 +8,7 @@ class LanguageFile (
     var category: String,
 ){
 
-    private var container: JsonContainer
+    var container: JsonContainer
 
     init {
         container = JsonContainer.loadConfig(filePath)
