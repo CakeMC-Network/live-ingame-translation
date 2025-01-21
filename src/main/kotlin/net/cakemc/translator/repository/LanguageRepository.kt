@@ -19,6 +19,19 @@ class LanguageRepository(
         if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
             Files.createDirectory(path)
         }
+
+        // Automatically load all language files in the directory
+        Files.walk(path).filter { Files.isRegularFile(it) &&
+                it.toString().endsWith(".json") }.forEach { file ->
+            val relativePath = path.relativize(file)
+            val parts = relativePath.toString().split("/").toTypedArray()
+            if (parts.size == 2) {
+                val language = parts[0]
+                val category = parts[1].removeSuffix(".json")
+                val languageFile = LanguageFile(file, language, category)
+                repositories["$language/$category"] = languageFile
+            }
+        }
     }
 
     fun resolveLanguageFile(language: String, category: String): LanguageFile {
