@@ -11,6 +11,8 @@ class DefaultTranslationReplacer(
     private val keyPattern: Pattern = Pattern.compile("\\b[a-zA-Z0-9_]+(?:\\.[a-zA-Z0-9_]+)+\\b")
     private val numberPattern: Pattern = Pattern.compile("^-?\\d*\\.?\\d+$")
     private val singleNumberPattern: Pattern = Pattern.compile("[0-9].*")
+    private val placeholderPattern: Pattern = Pattern.compile("\\{(\\d+)}")
+    private val argumentPattern: Pattern = Pattern.compile("\\[(.*?)]$")
 
     override fun isKeyPresent(key: String): Boolean {
         // Optimized by using a single check over the input
@@ -19,10 +21,10 @@ class DefaultTranslationReplacer(
                 !singleNumberPattern.matcher(it).matches() }
     }
 
-
-    override fun findTranslation(uuid: UUID, key: String): String {
+    override fun findTranslation(uuid: UUID, input: String): String {
+        val (key, arguments) = parseKeyAndArguments(input)
         if (isSingleTranslationKey(key)) {
-            return translateKey(uuid, key) ?: key
+            return replacePlaceholders(translateKey(uuid, key), arguments) ?: key
         }
 
         val builder = StringBuilder()
@@ -34,7 +36,8 @@ class DefaultTranslationReplacer(
                 continue
             }
 
-            builder.append(translateKey(uuid, string) ?: string).append(" ")
+            val translation = translateKey(uuid, string)
+            builder.append(replacePlaceholders(translation, arguments) ?: string).append(" ")
         }
         // Remove trailing space
         return builder.trimEnd()
@@ -51,6 +54,36 @@ class DefaultTranslationReplacer(
         val category = keySplit[0]
         val translations = repository.resolveLanguage(uuid, category)
         return translations.resolveForKey(key)
+    }
+
+    private fun replacePlaceholders(translation: String?, arguments: List<String>): String? {
+        if (translation.isNullOrEmpty()) return translation
+
+        val matcher = placeholderPattern.matcher(translation)
+        val result = StringBuffer()
+
+        while (matcher.find()) {
+            val index = matcher.group(1).toIntOrNull()
+            val replacement = if (index != null && index < arguments.size) {
+                arguments[index]
+            } else {
+                matcher.group(0) // Leave placeholder as is if no argument is provided
+            }
+            matcher.appendReplacement(result, replacement)
+        }
+        matcher.appendTail(result)
+        return result.toString()
+    }
+
+    private fun parseKeyAndArguments(input: String): Pair<String, List<String>> {
+        val matcher = argumentPattern.matcher(input)
+        return if (matcher.find()) {
+            val key = input.substring(0, matcher.start()).trim()
+            val arguments = matcher.group(1).split(",").map { it.trim() }
+            Pair(key, arguments)
+        } else {
+            Pair(input, emptyList())
+        }
     }
 
     private fun StringBuilder.trimEnd(): String {
