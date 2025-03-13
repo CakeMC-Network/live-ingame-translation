@@ -1,6 +1,6 @@
 package net.cakemc.translator.transformation.impl
 
-import net.cakemc.mc.lib.creature.Player
+import net.cakemc.mc.lib.game.entity.metadata.MetaDataEntry
 import net.cakemc.mc.lib.game.entity.metadata.MetaDataType
 import net.cakemc.mc.lib.game.text.test.api.chat.BaseComponent
 import net.cakemc.mc.lib.network.AbstractPacket
@@ -20,27 +20,36 @@ class EntityMetaDataTranslator(
 
     override fun translate(player: UUID, packet: AbstractPacket): AbstractPacket {
         if (packet is ClientSetEntityDataPacket) {
-            for (entry in packet.changes.metadata.entries) {
+            for (entry in ArrayList(packet.changes.metadata.entries)) {
                 if (entry.value.type == MetaDataType.STRING_TYPE) {
+                    packet.changes.metadata.remove(entry.key)
 
                     val type: String = entry.value.value as String;
-                    entry.value.value = componentHelper.translateText(
+                    val translated = componentHelper.translateText(
                         player, type
-                    ) as Nothing?
+                    )
 
+                    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.STRING_TYPE, translated))
                 }
                 if (entry.value.type == MetaDataType.OPT_CHAT_TYPE && entry.value.value != null) {
+                    packet.changes.metadata.remove(entry.key)
 
                     val type: BaseComponent = entry.value.value as BaseComponent
-                    entry.value.value = componentHelper.translateComponent(
+                    val translated =  componentHelper.translateComponent(
                         player, type
-                    ) as Nothing?
+                    )
+
+                    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.CHAT_TYPE, translated))
                 }
                 if (entry.value.type == MetaDataType.CHAT_TYPE) {
+                    packet.changes.metadata.remove(entry.key)
+
                     val type: BaseComponent = entry.value.value as BaseComponent
-                    entry.value.value = componentHelper.translateComponent(
+                    val translated = componentHelper.translateComponent(
                         player, type
-                    ) as Nothing?
+                    )
+
+                    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.CHAT_TYPE, translated))
                 }
 
             }
