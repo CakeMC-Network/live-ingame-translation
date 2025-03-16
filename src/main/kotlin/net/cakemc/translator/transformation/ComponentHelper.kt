@@ -13,7 +13,8 @@ class ComponentHelper(var translatorRegistry: TranslationReplacer) {
     fun translateComponent(player: UUID, component: BaseComponent): BaseComponent {
         val titlePane = ChatColor.stripColor(component.toPlainText())
         if (!translatorRegistry.isKeyPresent(titlePane))
-            return TextComponent(component.toPlainText().replace("!", ""))
+            return TextComponent(component.toPlainText()
+                .replace("*", ""))
 
         val translated = translatorRegistry.findTranslation(player, titlePane)
         return TextComponent(translated)
@@ -22,7 +23,7 @@ class ComponentHelper(var translatorRegistry: TranslationReplacer) {
     fun translateText(player: UUID, text: String): String {
         val titlePane = ChatColor.stripColor(text)
         if (!translatorRegistry.isKeyPresent(titlePane))
-            return text.replace("!", "")
+            return text.replace("*", "")
 
         val translated = translatorRegistry.findTranslation(player, titlePane)
         return translated
