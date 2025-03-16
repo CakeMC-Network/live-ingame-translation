@@ -15,6 +15,9 @@ class DefaultTranslationReplacer(
     private val argumentPattern: Pattern = Pattern.compile("\\[(.*?)]$")
 
     override fun isKeyPresent(key: String): Boolean {
+        if (key.contains("!"))
+            return false
+
         // Optimized by using a single check over the input
         return key.split(" ").any { keyPattern.matcher(it).matches() &&
                 it.length > 2 &&
