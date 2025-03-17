@@ -1,5 +1,6 @@
 package net.cakemc.translator.transformation.impl
 
+import net.cakemc.mc.lib.game.text.test.api.chat.TextComponent
 import net.cakemc.mc.lib.network.AbstractPacket
 import net.cakemc.protocol.protocol.packets.client.ClientSystemChatPacket
 import net.cakemc.translator.transformation.ComponentHelper
@@ -18,7 +19,10 @@ class MessageTranslator(
     override fun translate(player: UUID, packet: AbstractPacket): AbstractPacket {
         if (packet is ClientSystemChatPacket) {
             packet.component = componentHelper.translateComponent(
-                player, packet.component
+                player, TextComponent(
+                    packet.component.toPlainText()
+                        .replace("\\", "")
+                )
             )
             return packet
         }
