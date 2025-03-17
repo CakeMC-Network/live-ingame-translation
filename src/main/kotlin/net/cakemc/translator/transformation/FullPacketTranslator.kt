@@ -28,7 +28,7 @@ class FullPacketTranslator(
 
     fun register() {
         abstractServer.eventManager.register(ServerSendPacketEvent::class.java, EventHandlers.IHandler {
-            if (it.networkPlayer.currentState != NetworkPlayer.State.GAME)
+            if (it.networkPlayer.currentState != NetworkPlayer.State.GAME || it.packet.flagged)
                 return@IHandler
 
             val playerUUID = it.networkPlayer.playerUUID
@@ -38,6 +38,7 @@ class FullPacketTranslator(
                 packet = translator.translate(
                     playerUUID, it.packet
                 )
+                packet.flagged = true
             }
 
             it.packet = packet
