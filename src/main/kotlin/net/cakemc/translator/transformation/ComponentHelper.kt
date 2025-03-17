@@ -12,9 +12,15 @@ class ComponentHelper(var translatorRegistry: TranslationReplacer) {
 
     fun translateComponent(player: UUID, component: BaseComponent): BaseComponent {
         val titlePane = ChatColor.stripColor(component.toPlainText())
-        if (!translatorRegistry.isKeyPresent(titlePane))
-            return TextComponent(component.toPlainText()
-                .replace("\\", ""))
+
+        if (titlePane.contains("\\")) {
+            return TextComponent(component.toPlainText())
+        }
+
+        if (!translatorRegistry.isKeyPresent(titlePane)) {
+            val text = component.toPlainText().replace("\\", "")
+            return TextComponent(text)
+        }
 
         val translated = translatorRegistry.findTranslation(player, titlePane)
         return TextComponent(translated)
