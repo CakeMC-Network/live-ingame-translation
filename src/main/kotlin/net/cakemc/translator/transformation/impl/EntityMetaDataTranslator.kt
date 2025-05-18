@@ -31,26 +31,26 @@ class EntityMetaDataTranslator(
 
                     packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.STRING_TYPE, translated))
                 }
-                if (entry.value.type == MetaDataType.OPT_CHAT_TYPE && entry.value.value != null) {
-                    packet.changes.metadata.remove(entry.key)
-
-                    val type: BaseComponent = entry.value.value as BaseComponent
-                    val translated =  componentHelper.translateComponent(
-                        player, type
-                    )
-
-                    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.CHAT_TYPE, translated))
-                }
-                if (entry.value.type == MetaDataType.CHAT_TYPE) {
-                    packet.changes.metadata.remove(entry.key)
-
-                    val type: BaseComponent = entry.value.value as BaseComponent
-                    val translated = componentHelper.translateComponent(
-                        player, type
-                    )
-
-                    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.CHAT_TYPE, translated))
-                }
+                //if (entry.value.type == MetaDataType.OPT_CHAT_TYPE && entry.value.value != null) {
+                //    packet.changes.metadata.remove(entry.key)
+                //
+                //    val type: BaseComponent = entry.value.value as BaseComponent
+                //    val translated =  componentHelper.translateComponent(
+                //        player, type
+                //    )
+                //
+                //    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.OPT_CHAT_TYPE, translated))
+                //}
+                //if (entry.value.type == MetaDataType.CHAT_TYPE) {
+                //    packet.changes.metadata.remove(entry.key)
+                //
+                //    val type: BaseComponent = entry.value.value as BaseComponent
+                //    val translated = componentHelper.translateComponent(
+                //        player, type
+                //    )
+                //
+                //    packet.changes.metadata.put(entry.key, MetaDataEntry(MetaDataType.CHAT_TYPE, translated))
+                //}
 
             }
             return packet

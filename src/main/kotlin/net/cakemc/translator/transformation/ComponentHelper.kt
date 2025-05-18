@@ -11,7 +11,7 @@ import java.util.*
 class ComponentHelper(var translatorRegistry: TranslationReplacer) {
 
     fun translateComponent(player: UUID, component: BaseComponent): BaseComponent {
-        val titlePane = ChatColor.stripColor(component.toPlainText())
+        val titlePane = component.toPlainText()
 
         if (titlePane.contains("\\")) {
             return TextComponent(component.toPlainText())
@@ -27,11 +27,10 @@ class ComponentHelper(var translatorRegistry: TranslationReplacer) {
     }
 
     fun translateText(player: UUID, text: String): String {
-        val titlePane = ChatColor.stripColor(text)
-        if (!translatorRegistry.isKeyPresent(titlePane))
+        if (!translatorRegistry.isKeyPresent(text))
             return text.replace("\\", "")
 
-        val translated = translatorRegistry.findTranslation(player, titlePane)
+        val translated = translatorRegistry.findTranslation(player, text)
         return translated
     }
 
